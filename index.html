@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Deportivo</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- Pantalla de Login -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <i class="fas fa-trophy"></i>
+                    <h1>Dashboard Deportivo</h1>
+                    <p>Ingresa tu contraseña para continuar</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="passwordInput" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <span>Iniciar Sesión</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div id="dashboard" class="dashboard hidden">
+        <div class="dashboard-container">
+            <!-- Sidebar -->
+            <div class="sidebar-overlay hidden"></div>
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Dashboard Deportivo</h3>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#inicio" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li><a href="#jugadores"><i class="fas fa-users"></i> Jugadores</a></li>
+                        <li><a href="#ia"><i class="fas fa-robot"></i> IA</a></li>
+                    </ul>
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <header class="mobile-header">
+                    <div class="mobile-header-top">
+                        <h3>Dashboard Deportivo</h3>
+                        <button id="logoutBtnMobile" class="logout-btn" style="padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Salir
+                        </button>
+                    </div>
+                    <nav class="mobile-nav">
+                        <a href="#inicio" class="mobile-nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </a>
+                        <a href="#jugadores" class="mobile-nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Jugadores</span>
+                        </a>
+                        <a href="#ia" class="mobile-nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>IA</span>
+                        </a>
+                    </nav>
+                </header>
+                <header class="main-header">
+                    <h1>Bienvenido al Dashboard Deportivo</h1>
+                    <p>Explora información detallada sobre diferentes deportes</p>
+                </header>
+
+                <!-- Secciones de Deportes -->
+                <section id="inicio" class="sports-section">
+                    <h2>Deportes Disponibles</h2>
+                    <div class="sports-grid">
+                        <div class="sport-card" data-sport="futbol">
+                            <div class="sport-icon">
+                                <i class="fas fa-futbol"></i>
+                            </div>
+                            <h3>Fútbol</h3>
+                            <p>El deporte más popular del mundo con millones de seguidores</p>
+                            <div class="card-overlay">
+                                <span>Ver información completa</span>
+                            </div>
+                        </div>
+
+                        <div class="sport-card" data-sport="volleyball">
+                            <div class="sport-icon">
+                                <i class="fas fa-volleyball-ball"></i>
+                            </div>
+                            <h3>Volleyball</h3>
+                            <p>Deporte de equipo dinámico y emocionante</p>
+                            <div class="card-overlay">
+                                <span>Ver información completa</span>
+                            </div>
+                        </div>
+
+                        <div class="sport-card" data-sport="basketball">
+                            <div class="sport-icon">
+                                <i class="fas fa-basketball-ball"></i>
+                            </div>
+                            <h3>Basketball</h3>
+                            <p>Deporte de alta intensidad y espectacularidad</p>
+                            <div class="card-overlay">
+                                <span>Ver información completa</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Estadísticas Rápidas -->
+                <section class="players-section">
+                    <h2>Jugadores Destacados</h2>
+                </section>
+                
+                <section id="jugadores" class="players-grid">
+                    <div class="overview-card">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>Lionel Messi</h3>
+                        <p>Delantero argentino, considerado uno de los mejores jugadores de la historia.</p>
+                    </div>
+                    <div class="overview-card">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>LeBron James</h3>
+                        <p>Estrella del basketball, múltiple campeón de la NBA y líder histórico.</p>
+                    </div>
+                    <div class="overview-card">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>Karch Kiraly</h3>
+                        <p>Leyenda del volleyball, único jugador en ganar oro olímpico indoor y de playa.</p>
+                    </div>
+
+                    <!-- Contenedor vacío para jugadores dinámicos -->
+                    <div id="playersContainer"></div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Chat Section -->
+        <section id="ia" class="chat-section" data-bot-name="Asistente Deportivo IA" data-bot-icon="fas fa-robot">
+            <div class="chat-section-container">
+                <div class="chat-section-header">
+                    <h2><i class="fas fa-robot"></i> Asistente Deportivo IA</h2>
+                    <p>Pregúntame cualquier cosa sobre deportes y obtén respuestas instantáneas</p>
+                </div>
+                <div class="chat-interface">
+                    <div class="chat-header">
+                        <h3><i class="fas fa-robot"></i> Asistente Deportivo IA</h3>
+                        <div class="chat-controls">
+                            <button class="control-btn" id="fullscreenBtn">
+                                <i class="fas fa-expand"></i> Pantalla completa
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <i class="fas fa-robot"></i>
+                            <span>¡Hola! Soy tu asistente deportivo especializado. ¿En qué puedo ayudarte hoy?</span>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chatInput" placeholder="Escribe tu pregunta sobre deportes...">
+                        <button id="sendBtn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modales -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
