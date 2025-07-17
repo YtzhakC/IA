@@ -46,7 +46,6 @@ const elements = {
     loginForm: document.getElementById("loginForm"),
     logoutBtn: document.getElementById("logoutBtn"),
     logoutBtnMobile: document.getElementById("logoutBtnMobile"),
-    sportCards: document.querySelectorAll(".sport-card"),
     modalOverlay: document.getElementById("modalOverlay"),
     modalTitle: document.getElementById("modalTitle"),
     modalContent: document.getElementById("modalContent"),
@@ -65,13 +64,36 @@ const elements = {
 // Cargar datos desde JSON (ruta dinámica compatible con Render)
 async function loadData() {
     try {
+        console.log("Cargando datos desde:", `${window.location.origin}/data.json`)
         const response = await fetch(`${window.location.origin}/data.json`)
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
         appData = await response.json()
-        console.log("Datos cargados exitosamente")
+        console.log("Datos cargados exitosamente:", appData)
+        console.log("Sports info disponible:", Object.keys(appData.sportsInfo || {}))
     } catch (error) {
         console.error("Error al cargar los datos:", error)
+        console.log("Usando datos por defecto")
+        
+        // Datos por defecto si no se puede cargar el JSON
         appData = {
-            sportsInfo: {},
+            sportsInfo: {
+                futbol: {
+                    title: "Fútbol - El Deporte Rey",
+                    content: "<div class='sport-info'><h3>Fútbol</h3><p>El fútbol es el deporte más popular del mundo. Se juega entre dos equipos de once jugadores cada uno y el objetivo es marcar goles en la portería contraria.</p></div>"
+                },
+                volleyball: {
+                    title: "Volleyball - Deporte de Precisión",
+                    content: "<div class='sport-info'><h3>Volleyball</h3><p>El volleyball es un deporte de equipo que se juega en una cancha dividida por una red. Cada equipo intenta hacer que el balón toque el suelo del campo contrario.</p></div>"
+                },
+                basketball: {
+                    title: "Basketball - El Espectáculo del Deporte",
+                    content: "<div class='sport-info'><h3>Basketball</h3><p>El basketball es un deporte de equipo que se juega en una cancha con dos canastas. El objetivo es anotar más puntos que el equipo contrario.</p></div>"
+                }
+            },
             players: [],
         }
     }
@@ -93,6 +115,9 @@ const app = {
                 setTimeout(() => {
                     elements.dashboard.style.transition = "opacity 0.5s ease"
                     elements.dashboard.style.opacity = "1"
+                    
+                    // Configurar sport cards después de que el dashboard esté visible
+                    this.setupSportCards()
                 }, 100)
                 
                 // Limpiar el campo de contraseña
@@ -338,19 +363,48 @@ const app = {
     },
 
     handleSportClick(e) {
+        console.log("Sport card clicked!")
+        e.preventDefault()
+        e.stopPropagation()
+        
         const sport = e.currentTarget.dataset.sport
+        console.log("Sport selected:", sport)
+        console.log("appData:", appData)
+        
+        if (!appData || !appData.sportsInfo) {
+            console.error("appData or sportsInfo not loaded")
+            return
+        }
+        
         const info = appData.sportsInfo[sport]
+        console.log("Sport info:", info)
 
         if (info) {
+            console.log("Opening modal for sport:", sport)
+            
+            // Verificar que los elementos del modal existan
+            if (!elements.modalTitle || !elements.modalContent || !elements.modalOverlay) {
+                console.error("Modal elements not found")
+                return
+            }
+            
             elements.modalTitle.textContent = info.title
             elements.modalContent.innerHTML = info.content
             elements.modalOverlay.classList.remove("hidden")
             document.body.style.overflow = "hidden"
+            
+            console.log("Modal opened successfully")
+        } else {
+            console.error("No info found for sport:", sport)
+            console.log("Available sports:", Object.keys(appData.sportsInfo))
         }
     },
 
     closeModal() {
-        elements.modalOverlay.classList.add("hidden")
+        console.log("Closing modal")
+        if (elements.modalOverlay) {
+            elements.modalOverlay.classList.add("hidden")
+        }
         document.body.style.overflow = "auto"
     },
 
@@ -612,16 +666,33 @@ const app = {
             managePasswordsBtn.addEventListener("click", this.showPasswordManager.bind(this))
         }
         
-        elements.sportCards.forEach((card) => card.addEventListener("click", this.handleSportClick.bind(this)))
-        elements.closeModal.addEventListener("click", this.closeModal.bind(this))
-        elements.modalOverlay.addEventListener("click", (e) => {
-            if (e.target === elements.modalOverlay) this.closeModal()
-        })
-        elements.sendBtn.addEventListener("click", this.sendMessage.bind(this))
-        elements.chatInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") this.sendMessage()
-        })
-        elements.fullscreenBtn.addEventListener("click", this.toggleFullscreen.bind(this))
+        // Obtener sport cards dinámicamente y agregar event listeners
+        this.setupSportCards()
+        
+        // Event listeners para el modal
+        if (elements.closeModal) {
+            elements.closeModal.addEventListener("click", this.closeModal.bind(this))
+        }
+        
+        if (elements.modalOverlay) {
+            elements.modalOverlay.addEventListener("click", (e) => {
+                if (e.target === elements.modalOverlay) this.closeModal()
+            })
+        }
+        
+        if (elements.sendBtn) {
+            elements.sendBtn.addEventListener("click", this.sendMessage.bind(this))
+        }
+        
+        if (elements.chatInput) {
+            elements.chatInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") this.sendMessage()
+            })
+        }
+        
+        if (elements.fullscreenBtn) {
+            elements.fullscreenBtn.addEventListener("click", this.toggleFullscreen.bind(this))
+        }
         
         // Eventos para el menú móvil (solo si existe)
         if (elements.menuBtn) {
@@ -633,9 +704,20 @@ const app = {
 
         // Escape key para salir de pantalla completa
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && elements.chatInterface.classList.contains('fullscreen')) {
+            if (e.key === "Escape" && elements.chatInterface && elements.chatInterface.classList.contains('fullscreen')) {
                 this.toggleFullscreen()
             }
+        })
+    },
+
+    setupSportCards() {
+        // Obtener sport cards dinámicamente para evitar problemas de inicialización
+        const sportCards = document.querySelectorAll(".sport-card")
+        console.log("Sport cards encontradas:", sportCards.length)
+        
+        sportCards.forEach((card, index) => {
+            console.log(`Configurando card ${index}:`, card.dataset.sport)
+            card.addEventListener("click", this.handleSportClick.bind(this))
         })
     },
 
@@ -652,6 +734,13 @@ const app = {
         // Mostrar contador de contraseñas en el botón
         this.updatePasswordCounter()
         
+        // Verificar que los elementos del modal existan
+        console.log("Modal elements check:")
+        console.log("modalOverlay:", elements.modalOverlay)
+        console.log("modalTitle:", elements.modalTitle)
+        console.log("modalContent:", elements.modalContent)
+        console.log("closeModal:", elements.closeModal)
+        
         console.log("Aplicación inicializada correctamente")
         console.log("Contraseñas cargadas:", passwordManager.passwords.length)
     },
@@ -666,6 +755,20 @@ const app = {
             }
         }
     },
+
+    // Método para probar el modal manualmente
+    testModal() {
+        console.log("Testing modal...")
+        if (elements.modalOverlay) {
+            elements.modalTitle.textContent = "Prueba del Modal"
+            elements.modalContent.innerHTML = "<p>Este es un test del modal</p>"
+            elements.modalOverlay.classList.remove("hidden")
+            document.body.style.overflow = "hidden"
+            console.log("Modal test opened")
+        } else {
+            console.error("Modal overlay not found!")
+        }
+    },
 }
 
 // Inicializar cuando el DOM esté listo
@@ -675,3 +778,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Exportar para uso global si es necesario
 window.SportsApp = app
+window.testModal = () => app.testModal()
+window.elements = elements
+window.appData = () => appData
