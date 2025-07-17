@@ -1199,6 +1199,249 @@ body {
   line-height: 1.6;
 }
 
+/* Estilos para contenido enriquecido de deportes */
+.sport-intro {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.sport-intro h3 {
+  color: white !important;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+}
+
+.sport-intro p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.sport-rules {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+}
+
+.sport-rules h3 {
+  color: white !important;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+}
+
+.sport-rules ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sport-rules li {
+  margin-bottom: 12px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  border-left: 4px solid #fff;
+  color: white !important;
+  backdrop-filter: blur(10px);
+}
+
+.sport-competitions {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+}
+
+.sport-competitions h3 {
+  color: white !important;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+}
+
+.competition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.competition-item {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  border-left: 4px solid #fff;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.competition-item:hover {
+  transform: translateY(-5px);
+}
+
+.competition-item h4 {
+  color: white !important;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.competition-item p {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.sport-positions {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+}
+
+.sport-positions h3 {
+  color: white !important;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+}
+
+.positions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.position-item {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  border-left: 4px solid #fff;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.position-item:hover {
+  transform: translateY(-5px);
+}
+
+.position-item h4 {
+  color: white !important;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.position-item p {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.sport-benefits {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);
+}
+
+.sport-benefits h3 {
+  color: white !important;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.benefit-item {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  text-align: center;
+  border-left: 4px solid #fff;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.benefit-item:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-item i {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.benefit-item h4 {
+  color: white !important;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.benefit-item p {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* Responsive para modales enriquecidos */
+@media (max-width: 768px) {
+  .modal {
+    width: 95%;
+    margin: 20px auto;
+    max-height: 85vh;
+  }
+  
+  .modal-header {
+    padding: 20px 20px 15px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .competition-grid,
+  .positions-grid,
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sport-intro h3 {
+    font-size: 1.5em;
+  }
+  
+  .sport-rules h3,
+  .sport-competitions h3,
+  .sport-positions h3,
+  .sport-benefits h3 {
+    font-size: 1.4em;
+  }
+  
+  .sport-intro,
+  .sport-rules,
+  .sport-competitions,
+  .sport-positions,
+  .sport-benefits {
+    padding: 20px;
+  }
+}
+
 .sport-info li strong {
   color: #4fc3f7;
 }

@@ -65,7 +65,7 @@ const elements = {
 async function loadData() {
     try {
         console.log("Cargando datos desde:", `${window.location.origin}/data.json`)
-        const response = await fetch(`${window.location.origin}/data.json`)
+        const response = await fetch(`./data.json`)
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
@@ -76,22 +76,174 @@ async function loadData() {
         console.log("Sports info disponible:", Object.keys(appData.sportsInfo || {}))
     } catch (error) {
         console.error("Error al cargar los datos:", error)
-        console.log("Usando datos por defecto")
+        console.log("Usando datos por defecto embebidos")
         
-        // Datos por defecto si no se puede cargar el JSON
+        // Datos completos embebidos como fallback
         appData = {
             sportsInfo: {
                 futbol: {
                     title: "Fútbol - El Deporte Rey",
-                    content: "<div class='sport-info'><h3>Fútbol</h3><p>El fútbol es el deporte más popular del mundo. Se juega entre dos equipos de once jugadores cada uno y el objetivo es marcar goles en la portería contraria.</p></div>"
+                    content: `<div class="sport-info">
+                        <div class="sport-intro">
+                            <h3><i class="fas fa-history"></i> Historia y Orígenes del Fútbol</h3>
+                            <p>El fútbol, conocido como soccer en algunos países, es indiscutiblemente el deporte más popular del mundo con más de 4 mil millones de seguidores. Sus orígenes se remontan a civilizaciones antiguas como China, Grecia y Roma, pero el fútbol moderno nació en Inglaterra durante el siglo XIX.</p>
+                            <p>La Football Association (FA) se fundó en 1863 en Londres, estableciendo las primeras reglas oficiales del juego. Desde entonces, el fútbol se ha expandido globalmente, convirtiéndose en un fenómeno cultural que trasciende fronteras, idiomas y clases sociales.</p>
+                        </div>
+                        <div class="sport-rules">
+                            <h3><i class="fas fa-gavel"></i> Reglas Fundamentales</h3>
+                            <ul>
+                                <li><strong>Equipos:</strong> Dos equipos de 11 jugadores cada uno, incluyendo un portero</li>
+                                <li><strong>Objetivo:</strong> Marcar más goles que el equipo contrario introduciendo el balón en la portería</li>
+                                <li><strong>Duración:</strong> 90 minutos divididos en dos tiempos de 45 minutos cada uno</li>
+                                <li><strong>Campo:</strong> Rectangular, entre 90-120 metros de largo y 45-90 metros de ancho</li>
+                                <li><strong>Balón:</strong> Esférico, circunferencia entre 68-70 cm y peso entre 410-450 gramos</li>
+                                <li><strong>Fuera de juego:</strong> Un jugador está en posición antirreglamentaria si está más cerca de la línea de gol que el balón y el penúltimo adversario</li>
+                            </ul>
+                        </div>
+                        <div class="sport-competitions">
+                            <h3><i class="fas fa-trophy"></i> Competiciones Principales</h3>
+                            <div class="competition-grid">
+                                <div class="competition-item">
+                                    <h4>Copa Mundial FIFA</h4>
+                                    <p>El torneo más prestigioso del fútbol mundial, celebrado cada cuatro años desde 1930.</p>
+                                </div>
+                                <div class="competition-item">
+                                    <h4>UEFA Champions League</h4>
+                                    <p>La competición de clubes más importante de Europa.</p>
+                                </div>
+                                <div class="competition-item">
+                                    <h4>Copa América</h4>
+                                    <p>El torneo de selecciones más antiguo del mundo.</p>
+                                </div>
+                                <div class="competition-item">
+                                    <h4>Eurocopa</h4>
+                                    <p>Campeonato europeo de selecciones que se celebra cada cuatro años.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sport-benefits">
+                            <h3><i class="fas fa-heart"></i> Beneficios para la Salud</h3>
+                            <div class="benefits-grid">
+                                <div class="benefit-item">
+                                    <i class="fas fa-heartbeat"></i>
+                                    <h4>Cardiovascular</h4>
+                                    <p>Mejora la resistencia cardiovascular y reduce el riesgo de enfermedades cardíacas.</p>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-dumbbell"></i>
+                                    <h4>Fuerza Muscular</h4>
+                                    <p>Fortalece los músculos de las piernas, core y mejora la potencia general.</p>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-users"></i>
+                                    <h4>Social</h4>
+                                    <p>Fomenta el trabajo en equipo y las habilidades sociales.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
                 },
                 volleyball: {
-                    title: "Volleyball - Deporte de Precisión",
-                    content: "<div class='sport-info'><h3>Volleyball</h3><p>El volleyball es un deporte de equipo que se juega en una cancha dividida por una red. Cada equipo intenta hacer que el balón toque el suelo del campo contrario.</p></div>"
+                    title: "Volleyball - Deporte de Precisión y Estrategia",
+                    content: `<div class="sport-info">
+                        <div class="sport-intro">
+                            <h3><i class="fas fa-history"></i> Historia del Volleyball</h3>
+                            <p>El volleyball fue inventado en 1895 por William G. Morgan en Holyoke, Massachusetts. Originalmente llamado "Mintonette", el juego evolucionó rápidamente y se convirtió en deporte olímpico en 1964.</p>
+                        </div>
+                        <div class="sport-rules">
+                            <h3><i class="fas fa-gavel"></i> Reglas Fundamentales</h3>
+                            <ul>
+                                <li><strong>Equipos:</strong> Dos equipos de 6 jugadores cada uno</li>
+                                <li><strong>Objetivo:</strong> Enviar el balón al campo contrario para que toque el suelo</li>
+                                <li><strong>Toques:</strong> Máximo 3 toques por equipo antes de enviar el balón</li>
+                                <li><strong>Puntuación:</strong> Los sets se juegan a 25 puntos</li>
+                                <li><strong>Red:</strong> Altura de 2.43m para hombres y 2.24m para mujeres</li>
+                            </ul>
+                        </div>
+                        <div class="sport-positions">
+                            <h3><i class="fas fa-users"></i> Posiciones Principales</h3>
+                            <div class="positions-grid">
+                                <div class="position-item">
+                                    <h4>Colocador</h4>
+                                    <p>El cerebro del equipo, responsable de distribuir el balón.</p>
+                                </div>
+                                <div class="position-item">
+                                    <h4>Atacante</h4>
+                                    <p>Especialista en remates y ataques potentes.</p>
+                                </div>
+                                <div class="position-item">
+                                    <h4>Líbero</h4>
+                                    <p>Especialista defensivo, experto en recepción.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sport-benefits">
+                            <h3><i class="fas fa-heart"></i> Beneficios</h3>
+                            <div class="benefits-grid">
+                                <div class="benefit-item">
+                                    <i class="fas fa-eye"></i>
+                                    <h4>Coordinación</h4>
+                                    <p>Mejora la coordinación ojo-mano y los reflejos.</p>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-bolt"></i>
+                                    <h4>Agilidad</h4>
+                                    <p>Desarrolla movimientos explosivos y reacción rápida.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
                 },
                 basketball: {
                     title: "Basketball - El Espectáculo del Deporte",
-                    content: "<div class='sport-info'><h3>Basketball</h3><p>El basketball es un deporte de equipo que se juega en una cancha con dos canastas. El objetivo es anotar más puntos que el equipo contrario.</p></div>"
+                    content: `<div class="sport-info">
+                        <div class="sport-intro">
+                            <h3><i class="fas fa-history"></i> Historia del Basketball</h3>
+                            <p>El basketball fue inventado en 1891 por James Naismith en Massachusetts. Se convirtió en deporte olímpico en 1936 y la NBA se creó en 1946.</p>
+                        </div>
+                        <div class="sport-rules">
+                            <h3><i class="fas fa-gavel"></i> Reglas Fundamentales</h3>
+                            <ul>
+                                <li><strong>Equipos:</strong> Dos equipos de 5 jugadores cada uno</li>
+                                <li><strong>Objetivo:</strong> Anotar más puntos introduciendo el balón en la canasta</li>
+                                <li><strong>Duración:</strong> 4 cuartos de 12 minutos (NBA)</li>
+                                <li><strong>Canasta:</strong> Aro de 45cm de diámetro a 3.05m de altura</li>
+                                <li><strong>Puntuación:</strong> 1 punto (tiro libre), 2 puntos (canasta normal), 3 puntos (línea de tres)</li>
+                            </ul>
+                        </div>
+                        <div class="sport-positions">
+                            <h3><i class="fas fa-users"></i> Posiciones Clásicas</h3>
+                            <div class="positions-grid">
+                                <div class="position-item">
+                                    <h4>Base</h4>
+                                    <p>Director del equipo, organiza las jugadas.</p>
+                                </div>
+                                <div class="position-item">
+                                    <h4>Escolta</h4>
+                                    <p>Especialista en tiro exterior y anotación.</p>
+                                </div>
+                                <div class="position-item">
+                                    <h4>Pívot</h4>
+                                    <p>Domina la zona pintada, rebotes y bloqueos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sport-benefits">
+                            <h3><i class="fas fa-heart"></i> Beneficios</h3>
+                            <div class="benefits-grid">
+                                <div class="benefit-item">
+                                    <i class="fas fa-running"></i>
+                                    <h4>Condición Física</h4>
+                                    <p>Mejora resistencia, fuerza y agilidad.</p>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-brain"></i>
+                                    <h4>Agilidad Mental</h4>
+                                    <p>Desarrolla toma de decisiones rápidas.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
                 }
             },
             players: [],
