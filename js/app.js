@@ -681,7 +681,7 @@ const app = {
     },
 
     async fetchGeminiResponse(userMessage) {
-        const apiKey = window.GEMINI_API_KEY || "AIzaSyD3vxPUThZOi20m8i2UdjzW8hdGGg9iSG0"
+        const apiKey = window.GEMINI_API_KEY || "AIzaSyBYLQDGVKxgtz_HId_dwqRDclce0aV7fL0"
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`
 
         const requestBody = {
