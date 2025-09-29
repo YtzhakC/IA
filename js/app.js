@@ -1,51 +1,9 @@
 // Variables globales para almacenar los datos
 let appData = null
 
-// Sistema de contraseñas múltiples
-const passwordManager = {
-    passwords: ["Johangomez14"], // Contraseña inicial
-    
-    // Verificar si una contraseña existe
-    verifyPassword(password) {
-        return this.passwords.includes(password)
-    },
-    
-    // Agregar una nueva contraseña
-    addPassword(newPassword) {
-        if (!this.passwords.includes(newPassword)) {
-            this.passwords.push(newPassword)
-            this.saveToLocalStorage()
-            return true
-        }
-        return false
-    },
-    
-    // Cargar contraseñas desde localStorage
-    loadFromLocalStorage() {
-        const savedPasswords = localStorage.getItem('dashboardPasswords')
-        if (savedPasswords) {
-            const parsedPasswords = JSON.parse(savedPasswords)
-            // Mantener la contraseña inicial si no está en las guardadas
-            if (!parsedPasswords.includes("Johangomez14")) {
-                parsedPasswords.unshift("Johangomez14")
-            }
-            this.passwords = parsedPasswords
-        }
-    },
-    
-    // Guardar contraseñas en localStorage
-    saveToLocalStorage() {
-        localStorage.setItem('dashboardPasswords', JSON.stringify(this.passwords))
-    }
-}
-
 // Elementos del DOM
 const elements = {
-    loginScreen: document.getElementById("loginScreen"),
     dashboard: document.getElementById("dashboard"),
-    loginForm: document.getElementById("loginForm"),
-    logoutBtn: document.getElementById("logoutBtn"),
-    logoutBtnMobile: document.getElementById("logoutBtnMobile"),
     modalOverlay: document.getElementById("modalOverlay"),
     modalTitle: document.getElementById("modalTitle"),
     modalContent: document.getElementById("modalContent"),
@@ -253,266 +211,6 @@ async function loadData() {
 
 // Funciones principales
 const app = {
-    handleLogin(e) {
-        e.preventDefault()
-        const password = document.getElementById("passwordInput").value.trim()
-
-        if (password) {
-            if (passwordManager.verifyPassword(password)) {
-                // Contraseña correcta, mostrar dashboard
-                elements.loginScreen.classList.add("hidden")
-                elements.dashboard.classList.remove("hidden")
-
-                elements.dashboard.style.opacity = "0"
-                setTimeout(() => {
-                    elements.dashboard.style.transition = "opacity 0.5s ease"
-                    elements.dashboard.style.opacity = "1"
-                    
-                    // Configurar sport cards después de que el dashboard esté visible
-                    this.setupSportCards()
-                }, 100)
-                
-                // Limpiar el campo de contraseña
-                document.getElementById("passwordInput").value = ""
-            } else {
-                // Contraseña incorrecta, mostrar mensaje de error
-                this.showLoginError("Contraseña incorrecta. Inténtalo de nuevo.")
-            }
-        }
-    },
-
-    showLoginError(message) {
-        // Buscar si ya existe un mensaje de error
-        let errorDiv = document.querySelector(".login-error")
-        
-        if (!errorDiv) {
-            // Crear el div de error si no existe
-            errorDiv = document.createElement("div")
-            errorDiv.className = "login-error"
-            errorDiv.style.cssText = `
-                color: #ff6b6b;
-                background: rgba(255, 107, 107, 0.1);
-                border: 1px solid rgba(255, 107, 107, 0.3);
-                padding: 10px;
-                border-radius: 8px;
-                margin-bottom: 15px;
-                text-align: center;
-                font-size: 14px;
-                animation: shake 0.5s ease-in-out;
-            `
-            
-            // Agregar animación de shake
-            const style = document.createElement("style")
-            style.textContent = `
-                @keyframes shake {
-                    0%, 100% { transform: translateX(0); }
-                    25% { transform: translateX(-5px); }
-                    75% { transform: translateX(5px); }
-                }
-            `
-            document.head.appendChild(style)
-            
-            // Insertar antes del formulario
-            const loginForm = document.getElementById("loginForm")
-            loginForm.parentNode.insertBefore(errorDiv, loginForm)
-        }
-        
-        errorDiv.textContent = message
-        errorDiv.style.display = "block"
-        
-        // Ocultar el mensaje después de 3 segundos
-        setTimeout(() => {
-            errorDiv.style.display = "none"
-        }, 3000)
-    },
-
-    showPasswordManager() {
-        // Crear modal para gestión de contraseñas
-        const passwordModal = document.createElement("div")
-        passwordModal.className = "password-modal-overlay"
-        passwordModal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            padding: 20px;
-        `
-        
-        const modalContent = document.createElement("div")
-        modalContent.style.cssText = `
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            color: #e0e0e0;
-        `
-        
-        modalContent.innerHTML = `
-            <h2 style="margin-bottom: 20px; color: #4fc3f7;">
-                <i class="fas fa-key"></i> Gestión de Contraseñas
-            </h2>
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 10px; font-size: 1.1rem;">Contraseñas Activas: ${passwordManager.passwords.length}</h3>
-                <div style="max-height: 100px; overflow-y: auto; background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 10px; margin-bottom: 20px;">
-                    ${passwordManager.passwords.map(pass => `
-                        <div style="padding: 5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-family: monospace;">
-                            ${'*'.repeat(pass.length)}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 10px; font-size: 1.1rem;">Agregar Nueva Contraseña</h3>
-                <div style="margin-bottom: 15px;">
-                    <input type="password" id="currentPasswordInput" placeholder="Contraseña actual" style="
-                        width: 100%;
-                        padding: 10px;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        border-radius: 8px;
-                        background: rgba(255, 255, 255, 0.05);
-                        color: #e0e0e0;
-                        margin-bottom: 10px;
-                    ">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <input type="password" id="newPasswordInput" placeholder="Nueva contraseña" style="
-                        width: 100%;
-                        padding: 10px;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        border-radius: 8px;
-                        background: rgba(255, 255, 255, 0.05);
-                        color: #e0e0e0;
-                        margin-bottom: 10px;
-                    ">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <input type="password" id="confirmPasswordInput" placeholder="Confirmar nueva contraseña" style="
-                        width: 100%;
-                        padding: 10px;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        border-radius: 8px;
-                        background: rgba(255, 255, 255, 0.05);
-                        color: #e0e0e0;
-                    ">
-                </div>
-                <div id="passwordMessage" style="margin-bottom: 15px; font-size: 14px; min-height: 20px;"></div>
-            </div>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button id="addPasswordBtn" style="
-                    background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 14px;
-                ">
-                    <i class="fas fa-plus"></i> Agregar
-                </button>
-                <button id="closePasswordModal" style="
-                    background: rgba(255, 255, 255, 0.1);
-                    color: #e0e0e0;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 14px;
-                ">
-                    <i class="fas fa-times"></i> Cerrar
-                </button>
-            </div>
-        `
-        
-        passwordModal.appendChild(modalContent)
-        document.body.appendChild(passwordModal)
-        
-        // Event listeners para el modal
-        document.getElementById("addPasswordBtn").addEventListener("click", () => {
-            const currentPassword = document.getElementById("currentPasswordInput").value.trim()
-            const newPassword = document.getElementById("newPasswordInput").value.trim()
-            const confirmPassword = document.getElementById("confirmPasswordInput").value.trim()
-            const messageDiv = document.getElementById("passwordMessage")
-            
-            if (!currentPassword || !newPassword || !confirmPassword) {
-                messageDiv.style.color = "#ff6b6b"
-                messageDiv.textContent = "Por favor, completa todos los campos."
-                return
-            }
-            
-            if (!passwordManager.verifyPassword(currentPassword)) {
-                messageDiv.style.color = "#ff6b6b"
-                messageDiv.textContent = "La contraseña actual es incorrecta."
-                return
-            }
-            
-            if (newPassword !== confirmPassword) {
-                messageDiv.style.color = "#ff6b6b"
-                messageDiv.textContent = "Las contraseñas nuevas no coinciden."
-                return
-            }
-            
-            if (newPassword.length < 6) {
-                messageDiv.style.color = "#ff6b6b"
-                messageDiv.textContent = "La contraseña debe tener al menos 6 caracteres."
-                return
-            }
-            
-            if (passwordManager.addPassword(newPassword)) {
-                messageDiv.style.color = "#4fc3f7"
-                messageDiv.textContent = "¡Contraseña agregada exitosamente!"
-                
-                // Actualizar contador en el botón principal
-                this.updatePasswordCounter()
-                
-                // Limpiar campos
-                document.getElementById("currentPasswordInput").value = ""
-                document.getElementById("newPasswordInput").value = ""
-                document.getElementById("confirmPasswordInput").value = ""
-                
-                // Actualizar la lista de contraseñas en el modal
-                setTimeout(() => {
-                    document.body.removeChild(passwordModal)
-                    this.showPasswordManager()
-                }, 1500)
-            } else {
-                messageDiv.style.color = "#ff6b6b"
-                messageDiv.textContent = "Esta contraseña ya existe."
-            }
-        })
-        
-        document.getElementById("closePasswordModal").addEventListener("click", () => {
-            document.body.removeChild(passwordModal)
-        })
-        
-        // Cerrar modal al hacer clic fuera
-        passwordModal.addEventListener("click", (e) => {
-            if (e.target === passwordModal) {
-                document.body.removeChild(passwordModal)
-            }
-        })
-    },
-
-    handleLogout() {
-        elements.dashboard.classList.add("hidden")
-        elements.loginScreen.classList.remove("hidden")
-        document.getElementById("passwordInput").value = ""
-        
-        // Ocultar cualquier mensaje de error que pueda estar visible
-        const errorDiv = document.querySelector(".login-error")
-        if (errorDiv) {
-            errorDiv.style.display = "none"
-        }
-    },
 
     handleSportClick(e) {
         console.log("Sport card clicked!")
@@ -804,20 +502,6 @@ const app = {
     },
 
     setupEventListeners() {
-        elements.loginForm.addEventListener("submit", this.handleLogin.bind(this))
-        elements.logoutBtn.addEventListener("click", this.handleLogout.bind(this))
-        
-        // Botón de logout móvil
-        if (elements.logoutBtnMobile) {
-            elements.logoutBtnMobile.addEventListener("click", this.handleLogout.bind(this))
-        }
-        
-        // Botón de gestión de contraseñas
-        const managePasswordsBtn = document.getElementById("managePasswordsBtn")
-        if (managePasswordsBtn) {
-            managePasswordsBtn.addEventListener("click", this.showPasswordManager.bind(this))
-        }
-        
         // Obtener sport cards dinámicamente y agregar event listeners
         this.setupSportCards()
         
@@ -874,17 +558,17 @@ const app = {
     },
 
     async init() {
-        // Cargar contraseñas guardadas
-        passwordManager.loadFromLocalStorage()
-        
         await loadData()
         this.setupEventListeners()
         this.setupNavigation()
 
-        elements.dashboard.classList.add("hidden")
+        // Mostrar dashboard directamente (sin login)
+        elements.dashboard.classList.remove("hidden")
         
-        // Mostrar contador de contraseñas en el botón
-        this.updatePasswordCounter()
+        // Configurar sport cards después de que el dashboard esté visible
+        setTimeout(() => {
+            this.setupSportCards()
+        }, 100)
         
         // Verificar que los elementos del modal existan
         console.log("Modal elements check:")
@@ -894,33 +578,10 @@ const app = {
         console.log("closeModal:", elements.closeModal)
         
         console.log("Aplicación inicializada correctamente")
-        console.log("Contraseñas cargadas:", passwordManager.passwords.length)
     },
 
-    updatePasswordCounter() {
-        const managePasswordsBtn = document.getElementById("managePasswordsBtn")
-        if (managePasswordsBtn) {
-            const span = managePasswordsBtn.querySelector("span")
-            if (span) {
-                const count = passwordManager.passwords.length
-                span.textContent = `Gestionar Contraseñas (${count})`
-            }
-        }
-    },
 
-    // Método para probar el modal manualmente
-    testModal() {
-        console.log("Testing modal...")
-        if (elements.modalOverlay) {
-            elements.modalTitle.textContent = "Prueba del Modal"
-            elements.modalContent.innerHTML = "<p>Este es un test del modal</p>"
-            elements.modalOverlay.classList.remove("hidden")
-            document.body.style.overflow = "hidden"
-            console.log("Modal test opened")
-        } else {
-            console.error("Modal overlay not found!")
-        }
-    },
+
 }
 
 // Inicializar cuando el DOM esté listo
@@ -930,6 +591,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Exportar para uso global si es necesario
 window.SportsApp = app
-window.testModal = () => app.testModal()
 window.elements = elements
 window.appData = () => appData

@@ -8,37 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <!-- Pantalla de Login -->
-    <div id="loginScreen" class="login-screen">
-        <div class="login-container">
-            <div class="login-card">
-                <div class="login-header">
-                    <i class="fas fa-trophy"></i>
-                    <h1>Dashboard Deportivo</h1>
-                    <p>Ingresa tu contraseña para continuar</p>
-                </div>
-                <form id="loginForm" class="login-form">
-                    <div class="input-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="passwordInput" placeholder="Contraseña" required>
-                    </div>
-                    <button type="submit" class="login-btn">
-                        <span>Iniciar Sesión</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                    <div class="login-options">
-                        <button type="button" id="managePasswordsBtn" class="manage-passwords-btn">
-                            <i class="fas fa-key"></i>
-                            <span>Gestionar Contraseñas</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Dashboard Principal -->
-    <div id="dashboard" class="dashboard hidden">
+    <div id="dashboard" class="dashboard">
         <div class="dashboard-container">
             <!-- Sidebar -->
             <div class="sidebar-overlay hidden"></div>
@@ -55,10 +26,6 @@
                     </ul>
                 </nav>
                 <div class="sidebar-footer">
-                    <button id="logoutBtn" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Cerrar Sesión
-                    </button>
                 </div>
             </aside>
 
@@ -67,10 +34,6 @@
                 <header class="mobile-header">
                     <div class="mobile-header-top">
                         <h3>Dashboard Deportivo</h3>
-                        <button id="logoutBtnMobile" class="logout-btn" style="padding: 6px 12px; font-size: 12px;">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Salir
-                        </button>
                     </div>
                     <nav class="mobile-nav">
                         <a href="#inicio" class="mobile-nav-link active">
